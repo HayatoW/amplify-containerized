@@ -12,13 +12,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Enable CORS for all methods
-app.use(function (req, res, next) {
+app.use(function (_req, res, next) {
     res.header("Access-Control-Allow-Origin", "*")
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")
     next()
 });
 
-const checkAuthRules = (req, res, next) => {
+const checkAuthRules = (req, _res, next) => {
     const jwt = req.header("Authorization") || "";
 
     const [, jwtBody] = jwt.split(".");
@@ -39,7 +39,7 @@ const checkAuthRules = (req, res, next) => {
 
 app.use(checkAuthRules);
 
-app.get("/posts", async (req, res, next) => {
+app.get("/posts", async (_req, res, next) => {
 
     try {
         const result = await scanPostsFromDDB();
@@ -70,7 +70,7 @@ app.post("/post", async (req, res, next) => {
     }
 });
 
-app.use((req, res, next) => {
+app.use((_req, res, next) => {
 
     try {
         const result = `Please try GET on /posts, /post?id=xyz, or a POST to /post with JSON {\"id\":\"123\",\"title\":\"Fargate test\"}`;
@@ -81,7 +81,7 @@ app.use((req, res, next) => {
 });
 
 // Error middleware must be defined last
-app.use((err, req, res, next) => {
+app.use((err, _req, res, _next) => {
     console.error(err.message);
     if (!err.statusCode) err.statusCode = 500; // If err has no specified error code, set error code to 'Internal Server Error (500)'
     res
