@@ -28,6 +28,35 @@
       "skipHashing": false,
       "apiType": "REST",
       "iamAccessUnavailable": true
+    },
+    "flask": {
+      "resourceName": "flask",
+      "dependsOn": [
+        {
+          "category": "",
+          "resourceName": "NetworkStack",
+          "attributes": [
+            "ClusterName",
+            "VpcId",
+            "VpcCidrBlock",
+            "SubnetIds",
+            "VpcLinkId",
+            "CloudMapNamespaceId"
+          ]
+        }
+      ],
+      "deploymentMechanism": "FULLY_MANAGED",
+      "imageSource": {
+        "type": "TEMPLATE",
+        "template": "dockercompose-rest-express"
+      },
+      "restrictAccess": false,
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "ElasticContainer",
+      "skipHashing": false,
+      "apiType": "REST",
+      "iamAccessUnavailable": true
     }
   }
 }
